@@ -24,11 +24,20 @@ switch($method){
 }
 // Get:
 function handleGet($pdo){
-    $sql = "SELECT * FROM users";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($result);
+    if(isset($_GET['id'])){
+        $id = $_GET['id'];
+        $sql = "SELECT * FROM users WHERE id= :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id'=>$id]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($result);
+    }else{
+        $sql = "SELECT * FROM users";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($result);
+    }
 }
 // Insert:
 function handlePost($pdo, $input){
@@ -50,4 +59,5 @@ function handleDelete($pdo, $input) {
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['id' => $input['id']]);
     echo json_encode(['message' => 'User deleted successfully']);
+
 }
