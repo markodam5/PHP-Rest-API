@@ -30,13 +30,13 @@ function handleGet($pdo){
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['id'=>$id]);
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($result);
+        jsonResponse($result);
     }else{
         $sql = "SELECT * FROM users";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($result);
+        jsonResponse($result);
     }
 }
 // Insert:
@@ -44,20 +44,21 @@ function handlePost($pdo, $input){
     $sql = "INSERT INTO users (name, email) VALUES (:name, :email)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['name' => $input['name'], 'email' => $input['email']]);
-    echo json_encode(['message' => 'User created successfully']);
+    jsonResponse(['message' => 'User created successfully']);
 }
 // Update:
 function handlePut($pdo, $input){
     $sql = "UPDATE users SET name= :name, email = :email WHERE id = :id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['name' => $input['name'], 'email' => $input['email'], 'id' => $input['id']]);
-    echo json_encode(['message' => 'User updated successfully']);
+    jsonResponse(['message' => 'User updated successfully']);
 }
 // Delete:
 function handleDelete($pdo, $input) {
     $sql = "DELETE FROM users WHERE id = :id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['id' => $input['id']]);
-    echo json_encode(['message' => 'User deleted successfully']);
+    jsonResponse(['message' => 'User deleted successfully']);
 
 }
+
